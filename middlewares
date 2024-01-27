@@ -1,0 +1,19 @@
+const express=require('express');
+const app= express();
+const bodyParser=require('body-parser');
+
+app.use(bodyParser.urlencoded({extended:true}));
+
+app.get('/',(req,res)=>{
+    res.send("hello from express");
+})
+app.get('/addproduct',(req,res)=>{
+    res.send('<form action="/product" method="POST"> <input type="text" name="title"/><input type="number" name="size"/><button type="submit">Add products</button></form>')
+})
+app.post('/product',(req,res)=>{
+    console.log(req.body);//{ title: 'books', size: '10' }
+    res.redirect('/');
+})
+app.listen(4518,()=>{
+    console.log('listening');
+})
