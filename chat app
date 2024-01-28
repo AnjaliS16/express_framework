@@ -1,0 +1,81 @@
+const express = require('express');
+const app = express();
+const path = require('path');
+const fs = require('fs');
+const session = require('express-session');
+const bodyParser = require('body-parser');
+
+
+const staticPath = path.join(__dirname, "./js/in")
+console.log(path.join(__dirname, "./in"));
+//app.set("in",staticPath)
+app.use(express.static(staticPath))
+app.use(bodyParser.urlencoded({ extended: true }));
+
+
+app.get('/login', (req, res) => {
+  res.send(`<form
+  id ="login" onsubmit="handle(event)"> 
+  <input type="text" id="username" name="username"/>
+  <button type="submit" >login</button>
+</form>
+<script>
+function handle(event){
+event.preventDefault();
+var username=document.getElementById('username').value;
+localStorage.setItem("username",JSON.stringify(username));
+
+window.location.href = '/home?username=' + encodeURIComponent(username);
+
+document.getElementById('username').value="";
+
+}
+
+</script>`)
+});
+
+app.post('/logi', (req, res) => {
+  const username = req.query.username
+  
+  
+  
+      fs.writeFile('chat.txt', `${req.query.username}:=>${req.body.file}`+'\n' ,(writeError) => {
+        if (writeError) {
+          console.log(writeError);
+          res.status(500).send('Error writing to file');
+        } 
+        else {
+          res.redirect('/home');
+        }
+})
+})
+  
+
+
+app.get('/home', (req, res) => {
+  // Include JavaScript to redirect after form submission
+fs.readFile('chat.txt',(error,data)=>{
+  const username = req.query.username;
+  res.send(`
+  
+    <h2>Chat Data:</h2>
+    ${data}
+    <form action="/home?username=${username}"method="POST">
+   
+    <input type='text' id='file' name='file'></input>
+      <button type="submit">Send</button>
+    </form>
+    
+  
+</body>
+</html>
+    
+  `);
+})
+});
+app.get('/forgot', (req, res) => {
+  res.send('dont worry i will reset your password')
+})
+app.listen(9152, () => {
+  console.log('listening');
+});
