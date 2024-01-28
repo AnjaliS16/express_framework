@@ -1,0 +1,16 @@
+const express=require('express');
+const app= express();
+const bodyParser=require('body-parser');
+const adminrouter=require('./router/admin');
+const shoprouter=require('./router/shop');
+
+app.use(bodyParser.urlencoded({extended:true}));
+
+app.use(shoprouter);
+app.use(adminrouter);
+app.use((req,res)=>{
+    res.status(404).send('oops page not found');
+})
+app.listen(4718,()=>{
+    console.log('listening');
+})
