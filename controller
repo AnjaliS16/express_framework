@@ -1,0 +1,21 @@
+//admin controller
+const path=require('path');
+exports.admincon=(req,res)=>{
+    res.sendFile(path.join(__dirname,'../views/addproduct.html'))
+}
+exports.admincon1=(req,res)=>{
+    console.log(req.body);//{ title: 'books', size: '10' }
+    res.redirect('/');
+}
+
+//contact controller
+const path=require('path');
+exports.contact=(req,res)=>{
+    res.sendFile(path.join(__dirname,'../views/contact.html'));
+}
+
+//shop controller
+const path=require('path');
+exports.shopcon1=(req,res)=>{
+    res.sendFile(path.join(__dirname,'../views/shop.html'));
+}
